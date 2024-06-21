@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌑</title>
+    <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+    <script src="libs/aframe-extras.js"></script>
+</head>
+<body>
+    <a-scene physics="gravity: -1.62">
+        <a-assets>
+            <img id="moon" src="assets/9bf7e5cff1122e0ec5baa2b0a425b230.jpg">
+            <a-asset-item id="monolith" type="model" src="assets/monolith.glb"></a-asset-item>
+            <a-asset-item id="foguete" src="assets/A3-Rocket.glb"></a-asset-item>
+        </a-assets>
+
+        <!-- Criação de um ambiente com uma esfera representando o céu -->
+        <a-sky color="#000000"></a-sky>
+
+        <!-- Adicione várias estrelas como entidades -->
+        <a-entity position="0 0 -100" star-generator></a-entity>
+
+        <!-- Lua -->
+        <!-- <a-sphere position="0 0 0" material="src: #moon" geometry="phiStart: 100; radius: 30" rotation="0 45 0" static-body></a-sphere> -->
+        <a-sphere position="0 0 0" material="src: #moon" geometry="phiStart: 100; radius: 100" rotation="0 0 45" static-body></a-sphere>
+
+        <!-- Estrelas no céu inteiro -->
+        <a-entity position="0 0 -250" star-generator></a-entity>
+
+        <!-- <a-entity gltf-model="#monolith"></a-entity> -->
+        <a-entity gltf-model="#monolith" position="0 97.8 -30" static-body scale="0.5 0.5 0.5" rotation="20 180 -10"></a-entity>
+        <a-entity id="foguete" gltf-model="#foguete" position="0 100 10" scale="10 10 10"></a-entity>
+
+        <!-- <a-entity wasd-controls camera universal-controls look-controls camera position="0 32 0"></a-entity> -->
+        <!-- <a-entity camera wasd-controls kinematic-body position="0 32 0" collision-handler static-body></a-entity> -->
+        <!-- <a-entity camera universal-controls="movementControls: checkpoint;" kinematic-body="enableJumps: true" jump-ability="distance: 3" position="0 40 0" collision-handler></a-entity> -->
+        <a-camera camera look-controls="pointerLockEnabled: true" movement-controls="controls: checkpoint;" position="0 101 0"></a-camera>
+        <!-- <a-camera movement-controls position="0 37 0" jump-ability="distance: 3" kinematic-body="enableJumps: true" collision-handler></a-camera> -->
+    </a-scene>
+    <script>
+        // Componente personalizado para gerar estrelas
+        AFRAME.registerComponent('star-generator', {
+            init: function () {
+                const numStars = 300; // Número de estrelas desejado
+                for (let j = 0; j < 3; j++) {
+                    for (let i = 0; i < numStars; i++) {
+                        const star = document.createElement('a-sphere');
+                        star.setAttribute('radius', Math.random() * 0.1); // Tamanho aleatório
+                        star.setAttribute('position', {
+                            x: j === 1 ? -150 : (Math.random() - 0.5) * 800, // Aumente a distância das estrelas
+                            y: j === 2 ? -150 : (Math.random() - 0.5) * 800,
+                            z: j === 3 ? -150 : (Math.random() - 0.5) * 800 // Posição mais distante
+                        });
+                        star.setAttribute('color', '#ffffff'); // Cor branca
+                        this.el.appendChild(star);
+                    }
+                }
+            }
+        });
+    </script>
+</body>
